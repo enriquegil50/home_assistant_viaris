@@ -114,6 +114,7 @@ Once your device has been configured, you will see the integration entities.
 | Total Power | `Diagnostic` | kW |   :heavy_check_mark: | |
 | User connector 1 | `Diagnostic` |  | | Only supported in Rfid configuration|
 | User connector 2 | `Diagnostic` |   | | Only supported in viaris COMBIPLUS Rfid|
+| Grid power | `Diagnostic` | kW |    | Only supported in solar configuration. Positive = Import / Negative = Export |
 
 ### Switches
 

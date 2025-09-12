@@ -32,6 +32,7 @@ from .const import (
     CONF_SERIAL_NUMBER,
     CONTAX_D0613_KEY,
     CURRENT_MAX_POWER_KEY,
+    GRID_POWER_KEY,
     ETHERNET_KEY,
     EVSE_POWER_KEY,
     FIRMWARE_APP_KEY,
@@ -282,7 +283,7 @@ def get_state_solar(value) -> float:
     if "fvPower" in value:
         solar_pw = round(float(data["data"]["fvPower"] / 1000), 2)
         return solar_pw
-    return 0.0
+    #return 0.0
 
 
 def get_max_power(value) -> float:
@@ -291,6 +292,13 @@ def get_max_power(value) -> float:
     read_value = round(float(data["data"]["maxPower"] / 1000), 2)
     return read_value
 
+def get_grid_power(value) -> float:
+    """Extract grid power."""
+    data = json_loads(value)
+    if "instPower" in value:
+        read_value = round(float(data["data"]["instPower"] / 1000), 2)
+        return read_value
+    #return 0.0
 
 SENSOR_TYPES_RT: tuple[ViarisSensorEntityDescription, ...] = (
     ViarisSensorEntityDescription(
@@ -492,8 +500,19 @@ SENSOR_TYPES_RT: tuple[ViarisSensorEntityDescription, ...] = (
         disabled=False,
         translation_key="current_max_pw",
     ),
+    ViarisSensorEntityDescription(
+        key=GRID_POWER_KEY,
+        name="Grid power",
+        native_unit_of_measurement=UnitOfPower.KILO_WATT,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+        state=get_grid_power,
+        entity_category=None,
+        entity_registry_enabled_default=True,
+        disabled=False,
+        translation_key="grid_pw",
+    ),
 )
-
 
 def get_user_connector1(value) -> str:
     """Extract user connector1."""
